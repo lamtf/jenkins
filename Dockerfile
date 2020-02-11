@@ -10,7 +10,8 @@ ADD http://mirrors.jenkins.io/war-stable/latest/jenkins.war /opt/jenkins.war
 
 USER jenkins
 
-RUN echo "## Running Jenkins ## " && \
+RUN export JENKINS_HOME=/home/jenkins && \
+echo "## Running Jenkins ## " && \
 sh -c "java -jar /opt/jenkins.war > /dev/null 2>&1 &" && \
 sleep 30s && \
 echo "## Installing Jenkins Packages ##" && \
