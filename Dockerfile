@@ -11,6 +11,8 @@ ENV JENKINS_HOME /home/jenkins
 ADD http://mirrors.jenkins.io/war-stable/latest/jenkins.war /opt/
 #ADD jenkins.war /opt/
 
+RUN chmod a+r /opt/jenkins.war
+
 USER jenkins
 
 # Install some default Jenkins packages
@@ -18,7 +20,7 @@ USER jenkins
 RUN echo "## Running Jenkins ##" && \
 sh -c "java -jar /opt/jenkins.war > /dev/null 2>&1 &" && \
 jenkins_count=$(ls -1 /home/jenkins | wc -l) && \
-while [ $jenkins_count -lt 17 ] ; do sleep 2; jenkins_count=$(ls -1 /home/jenkins | wc -l); echo "$jenkins_count of 17"; done && \
+while [ $jenkins_count -lt 17 ] ; do sleep 2; jenkins_count=$(ls -1 /home/jenkins | wc -l); echo "$jenkins_count of 17 creating jenkins folders..."; done && \
 sleep 10s && \
 java -jar $JENKINS_HOME/war/WEB-INF/jenkins-cli.jar -auth admin:$(cat $JENKINS_HOME/secrets/initialAdminPassword) -s http://127.0.0.1:8080/ install-plugin credentials-binding \
 publish-over-ssh credentials \
