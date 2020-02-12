@@ -20,8 +20,8 @@ USER jenkins
 RUN echo "## Running Jenkins ##" && \
 sh -c "java -jar /opt/jenkins.war > /dev/null 2>&1 &" && \
 jenkins_count=$(ls -1 /home/jenkins | wc -l) && \
-while [ $jenkins_count -lt 17 ] ; do sleep 2; jenkins_count=$(ls -1 /home/jenkins | wc -l); echo "$jenkins_count of 17 creating jenkins folders..."; done && \
-while [ ! -f $JENKINS_HOME/secrets/initialAdminPassword ]; do; echo "waiting for initialAdminPassword file" sleep 2; done && \
+while [ $jenkins_count -lt 17 ] ; do sleep 2; jenkins_count=$(ls -1 /home/jenkins | wc -l); echo "$jenkins_count of 17 creating jenkins folders..." ; done && \
+while [ ! -f $JENKINS_HOME/secrets/initialAdminPassword ]; do echo "waiting for initialAdminPassword file" sleep 2; done && \
 java -jar $JENKINS_HOME/war/WEB-INF/jenkins-cli.jar -auth admin:$(cat $JENKINS_HOME/secrets/initialAdminPassword) -s http://127.0.0.1:8080/ install-plugin credentials-binding \
 publish-over-ssh credentials \
 credentials-binding \
